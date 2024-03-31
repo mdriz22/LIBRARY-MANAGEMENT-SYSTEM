@@ -6,7 +6,7 @@ public class conn{
     public conn(){  
         try{  
             Class.forName("com.mysql.cj.jdbc.Driver");  
-            c =DriverManager.getConnection("jdbc:mysql:///project2","root","new_password");    
+            c =DriverManager.getConnection("jdbc:mysql:///project2","root","1234");    
             s =c.createStatement();  
         
             

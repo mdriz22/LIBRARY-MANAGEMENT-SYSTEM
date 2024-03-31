@@ -72,7 +72,7 @@ public class StudentDetails extends JFrame implements ActionListener{
 	b1.setBounds(564, 89, 138, 33);
 	contentPane.add(b1);
 
-	JButton b2 = new JButton("Delete");
+	b2 = new JButton("Delete");
 	b2.addActionListener(this);
 	ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/nineth.png"));
         Image i5 = i4.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
@@ -128,42 +128,60 @@ public class StudentDetails extends JFrame implements ActionListener{
 	student();
     }
     
-    public void actionPerformed(ActionEvent ae){
-        try{
-            
-            conn con = new conn();
-            if( ae.getSource() == b1){
-                String sql = "select * from student where concat(name, student_id) like ?";
-		PreparedStatement st = con.c.prepareStatement(sql);
-		st.setString(1, "%" + search.getText() + "%");
-		ResultSet rs = st.executeQuery();
+   public void actionPerformed(ActionEvent ae){
+    try{
+        conn con = new conn();
+        if( ae.getSource() == b1){
+            // Search operation
+            String sql = "select * from student where concat(name, student_id) like ?";
+            PreparedStatement st = con.c.prepareStatement(sql);
+            st.setString(1, "%" + search.getText() + "%");
+            ResultSet rs = st.executeQuery();
 
-		table.setModel(DbUtils.resultSetToTableModel(rs));
-		rs.close();
-		st.close();
-            }
-    
-            if(ae.getSource() == b2){
-                String sql = "delete from student where name = '" + search.getText() + "'";
-		PreparedStatement st = con.c.prepareStatement(sql);
-
-		JDialog.setDefaultLookAndFeelDecorated(true);
-		int response = JOptionPane.showConfirmDialog(null, "Do you want to continue?", "Confirm",
-		JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (response == JOptionPane.NO_OPTION) {
-
-		} else if (response == JOptionPane.YES_OPTION) {
-                    int rs = st.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Deleted !!");
-		} else if (response == JOptionPane.CLOSED_OPTION) {
-                
-                }
-		st.close();
-		
-            }
-            con.c.close();
-        }catch(Exception e){
-            
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            rs.close();
+            st.close();
         }
+
+        if(ae.getSource() == b2){
+            // Delete operation
+            String studentNameToDelete = search.getText();
+            String sql = "delete from student where name = ?";
+            PreparedStatement st = con.c.prepareStatement(sql);
+            st.setString(1, studentNameToDelete);
+
+            // Confirmation dialog
+            JDialog.setDefaultLookAndFeelDecorated(true);
+            int response = JOptionPane.showConfirmDialog(null, "Do you want to continue?", "Confirm",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (response == JOptionPane.YES_OPTION) {
+                try {
+                    int rowsAffected = st.executeUpdate();
+                    if (rowsAffected > 0) {
+                        JOptionPane.showMessageDialog(null, "Student deleted successfully!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No student found with the provided name!");
+                    }
+                    // Commit the transaction
+                    con.c.commit();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "SQL Exception occurred: " + ex.getMessage());
+                }
+            } else {
+                // Do nothing if user chooses not to continue
+            }
+            st.close();            
+        }
+        con.c.close();
+    } catch(SQLException ex) {
+        // Handle SQL exceptions
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "SQL Exception occurred: " + ex.getMessage());
+    } catch(Exception e){
+        // Handle other exceptions
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Exception occurred: " + e.getMessage());
     }
+}
 }
