@@ -1,0 +1,76 @@
+CREATE TABLE account (
+    ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     username VARCHAR(50) NOT NULL,
+    ->     name VARCHAR(50) NOT NULL,
+    ->     password VARCHAR(100) NOT NULL,
+    ->     sec_q VARCHAR(100) NOT NULL,
+    ->     sec_ans VARCHAR(100) NOT NULL
+    -> );
+
+
+
+
+CREATE TABLE book (
+    ->     book_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     name VARCHAR(100) NOT NULL,
+    ->     isbn VARCHAR(50) NOT NULL,
+    ->     publisher VARCHAR(100) NOT NULL,
+    ->     edition VARCHAR(50),
+    ->     price DECIMAL(10, 2) NOT NULL,
+    ->     pages INT NOT NULL
+    -> );
+
+
+
+
+CREATE TABLE student (
+    ->     student_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     name VARCHAR(100) NOT NULL,
+    ->     father VARCHAR(100) NOT NULL,
+    ->     course VARCHAR(50) NOT NULL,
+    ->     branch VARCHAR(50) NOT NULL,
+    ->     year VARCHAR(20) NOT NULL,
+    ->     semester VARCHAR(20) NOT NULL
+    -> );
+
+
+
+CREATE TABLE issueBook (
+    ->     issue_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     book_id INT,
+    ->     student_id INT,
+    ->     bname VARCHAR(255),
+    ->     sname VARCHAR(255),
+    ->     course VARCHAR(50),
+    ->     branch VARCHAR(50),
+    ->     dateOfIssue DATE,
+    ->     FOREIGN KEY (book_id) REFERENCES book(book_id),
+    ->     FOREIGN KEY (student_id) REFERENCES student(student_id)
+    -> );
+
+
+
+
+CREATE TABLE returnBook (
+    ->     book_id VARCHAR(20),
+    ->     student_id VARCHAR(20),
+    ->     bname VARCHAR(100),
+    ->     sname VARCHAR(100),
+    ->     course VARCHAR(50),
+    ->     branch VARCHAR(50),
+    ->     dateOfIssue DATE,
+    ->     dateOfReturn DATE
+    -> );
+
+
+
+
+
+
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password';
+
+FLUSH PRIVILEGES;
+
+exit
+
