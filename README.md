@@ -6,6 +6,8 @@ A library management system is software that is designed to manage all the funct
 # Software Used:
 Netbeans IDE
 
+Java
+
 Mysql
 
 
