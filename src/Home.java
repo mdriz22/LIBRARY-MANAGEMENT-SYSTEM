@@ -180,10 +180,10 @@ public class Home extends JFrame implements ActionListener{
 
             JLabel l7 = new JLabel("");
             ImageIcon i16  = new ImageIcon(ClassLoader.getSystemResource("icons/logo_r.png"));
-            Image i17 = i16.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT);
+            Image i17 = i16.getImage().getScaledInstance(190, 190,Image.SCALE_DEFAULT);
             ImageIcon i18 = new ImageIcon(i17);
             l7 = new JLabel(i18);
-            l7.setBounds(562, 465, 157, 152);
+            l7.setBounds(562, 448, 190, 190);
             contentPane.add(l7);
 
             JPanel panel2 = new JPanel();
